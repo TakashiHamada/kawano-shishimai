@@ -17,15 +17,6 @@
 ## 音声の追加方法
 
 1. MP3ファイルを `audio/` フォルダに配置
-2. `audio_metadata.csv` にエントリを追加
-
-### CSVフォーマット
-
-```
-filename,title
-```
-
-- **filename**: 音声ファイル名（半角英数字・ハイフン・アンダースコアのみ）
-- **title**: 表示タイトル
+2. `index.html` の `audioFiles` 配列にファイル名を追加
 
 ※ 音声ファイルはMP3形式のみ対応です。

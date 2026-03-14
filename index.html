@@ -373,8 +373,24 @@
         const audioTitle = document.getElementById('audioTitle');
         const audioSelect = document.getElementById('audioSelect');
 
-        let audioMetadata = {};
-        let audioFiles = [];
+        // 音声ファイルリスト
+        const audioFiles = [
+            'A川野獅子舞の唄.MP3',
+            'B川野獅子舞の唄.MP3',
+            'あなたも名人になれる(2003.10笛).MP3',
+            'あなたも明日から名人になれる(2003.10笛と太鼓).MP3',
+            'あなたも明日から名人になれる(98\'10.18).MP3',
+            'あなたも明日から名人になれるしょうが(2003.6).MP3',
+            'しょうが見本原本.MP3',
+            'めじしがくし義平.MP3',
+            '四本掛り.MP3',
+            '大狂い義平.MP3',
+            '弓掛りあまやい、竿掛り.MP3',
+            '解説入りの四本掛り.MP3',
+            '解説入りの女獅子隠し.MP3',
+            '解説入りの竿掛り、解説入りのまり掛り.MP3',
+            '音府用・録音めじしがくし(98.10.18).MP3',
+        ];
 
         // ループ範囲
         let loopStart = null;
@@ -397,60 +413,41 @@
             return match ? decodeURIComponent(match[1]) : null;
         }
 
-        // CSVファイルを読み込んで音声メタデータを取得
-        async function loadAudioMetadata() {
-            try {
-                const response = await fetch('audio_metadata.csv');
-                const csvText = await response.text();
-                const lines = csvText.trim().split('\n');
-
-                // ヘッダー行をスキップして、データを解析
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (line) {
-                        const [filename, title] = line.split(',');
-                        audioMetadata[filename] = {
-                            title: title
-                        };
-                        audioFiles.push(filename);
-                    }
-                }
-
-                // 各音声ファイルのサイズを取得
-                await Promise.all(audioFiles.map(async (filename) => {
-                    try {
-                        const res = await fetch('audio/' + filename, { method: 'HEAD' });
-                        const size = res.headers.get('Content-Length');
-                        if (size) {
-                            audioMetadata[filename].fileSizeMB = (parseInt(size) / (1024 * 1024)).toFixed(1);
-                        }
-                    } catch (e) {
-                        // ファイルサイズ取得失敗時は表示しない
-                    }
-                }));
-
-                // セレクトボックスのオプションを生成
-                populateAudioSelector();
-            } catch (error) {
-                console.error('メタデータの読み込みに失敗しました:', error);
-            }
+        // ファイル名から表示タイトルを生成（拡張子を除去）
+        function getDisplayTitle(filename) {
+            return filename.replace(/\.[^.]+$/, '');
         }
 
-        // セレクトボックスにオプションを追加
-        function populateAudioSelector() {
+        // セレクトボックスにオプションを追加し初期化
+        async function initAudioSelector() {
             audioSelect.innerHTML = '';
+
+            // 各音声ファイルのサイズを取得
+            const sizes = {};
+            await Promise.all(audioFiles.map(async (filename) => {
+                try {
+                    const res = await fetch('audio/' + encodeURIComponent(filename), { method: 'HEAD' });
+                    const size = res.headers.get('Content-Length');
+                    if (size) {
+                        sizes[filename] = (parseInt(size) / (1024 * 1024)).toFixed(1);
+                    }
+                } catch (e) {
+                    // ファイルサイズ取得失敗時は表示しない
+                }
+            }));
+
             audioFiles.forEach((filename) => {
                 const option = document.createElement('option');
                 option.value = filename;
-                const meta = audioMetadata[filename];
-                option.textContent = filename + (meta.fileSizeMB ? ' [' + meta.fileSizeMB + 'MB]' : '');
+                const title = getDisplayTitle(filename);
+                option.textContent = title + (sizes[filename] ? ' [' + sizes[filename] + 'MB]' : '');
                 audioSelect.appendChild(option);
             });
 
-            // クッキーに保存された音源があればそれを選択、なければ最新（最後）の音源を選択
+            // クッキーに保存された音源があればそれを選択、なければ最初の音源を選択
             if (audioFiles.length > 0) {
                 const saved = getSelectedAudio();
-                const defaultFile = (saved && audioMetadata[saved]) ? saved : audioFiles[audioFiles.length - 1];
+                const defaultFile = (saved && audioFiles.includes(saved)) ? saved : audioFiles[0];
                 audioSelect.value = defaultFile;
                 changeAudio(defaultFile);
             }
@@ -459,19 +456,14 @@
         // 音声情報を更新
         function updateAudioInfo() {
             const currentSource = audio.querySelector('source').src;
-            const filename = currentSource.split('/').pop();
-
-            if (audioMetadata[filename]) {
-                audioTitle.textContent = audioMetadata[filename].title;
-            } else {
-                audioTitle.textContent = '音声情報';
-            }
+            const filename = decodeURIComponent(currentSource.split('/').pop());
+            audioTitle.textContent = getDisplayTitle(filename);
         }
 
         // 音声ファイルを切り替える
         function changeAudio(filename) {
             // 音声ソースを変更
-            audio.querySelector('source').src = 'audio/' + filename;
+            audio.querySelector('source').src = 'audio/' + encodeURIComponent(filename);
             audio.load();
 
             // メタデータを更新
@@ -496,8 +488,8 @@
             saveSelectedAudio(e.target.value);
         });
 
-        // ページ読み込み時にメタデータを取得
-        window.addEventListener('DOMContentLoaded', loadAudioMetadata);
+        // ページ読み込み時に初期化
+        window.addEventListener('DOMContentLoaded', initAudioSelector);
 
         // 再生/一時停止ボタンのテキストを更新
         function updatePlayPauseButton() {
