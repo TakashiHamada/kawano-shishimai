@@ -83,22 +83,6 @@
             min-height: 20px;
         }
 
-        .audio-info {
-            background: #EDE6DA;
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            text-align: left;
-            border-left: 3px solid #C4972F;
-        }
-
-        .audio-info h2 {
-            color: #2A2A2A;
-            font-size: 17px;
-            font-weight: bold;
-            margin: 0;
-        }
-
         .refresh-button {
             position: absolute;
             top: 8px;
@@ -146,8 +130,8 @@
 
         .audio-selector select {
             width: 100%;
-            padding: 10px 12px;
-            font-size: 15px;
+            padding: 14px 12px;
+            font-size: 18px;
             font-family: inherit;
             border: 1px solid #C4972F;
             border-radius: 4px;
@@ -319,17 +303,13 @@
         <div class="app-header">
             <div class="app-header-sub">川野獅子舞　笛練習専用プレイヤー</div>
             <div class="app-header-title">稽古の音七</div>
-            <div class="app-header-ruby">おとはち</div>
+            <div class="app-header-ruby">おとしち</div>
         </div>
 
         <div class="audio-selector">
             <select id="audioSelect">
                 <option value="">読み込み中...</option>
             </select>
-        </div>
-
-        <div class="audio-info" id="audioInfo">
-            <h2 id="audioTitle">音声情報</h2>
         </div>
 
         <div class="audio-player">
@@ -370,7 +350,6 @@
         const playPauseBtn = document.getElementById('playPauseBtn');
         const rewindBtn = document.getElementById('rewindBtn');
         const status = document.getElementById('status');
-        const audioTitle = document.getElementById('audioTitle');
         const audioSelect = document.getElementById('audioSelect');
 
         // 音声ファイルリスト
@@ -453,21 +432,11 @@
             }
         }
 
-        // 音声情報を更新
-        function updateAudioInfo() {
-            const currentSource = audio.querySelector('source').src;
-            const filename = decodeURIComponent(currentSource.split('/').pop());
-            audioTitle.textContent = getDisplayTitle(filename);
-        }
-
         // 音声ファイルを切り替える
         function changeAudio(filename) {
             // 音声ソースを変更
             audio.querySelector('source').src = 'audio/' + encodeURIComponent(filename);
             audio.load();
-
-            // メタデータを更新
-            updateAudioInfo();
 
             // 再生状態をリセット
             status.textContent = '';
