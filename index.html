@@ -922,6 +922,11 @@
             const channels = isStereo ? [0, 1] : [0];
             const chHeight = h / channels.length;
 
+            // 選択範囲のピクセル座標を事前計算
+            const hasSel = options.selectionStart != null && options.selectionEnd != null && options.selectionEnd > options.selectionStart;
+            const selXStart = hasSel ? Math.floor((options.selectionStart / duration) * w) : -1;
+            const selXEnd = hasSel ? Math.ceil((options.selectionEnd / duration) * w) : -1;
+
             channels.forEach((chIdx, i) => {
                 const data = audioBuffer.getChannelData(chIdx);
                 const total = data.length;
@@ -929,11 +934,12 @@
                 const midY = yOffset + chHeight / 2;
                 const halfH = chHeight / 2;
 
-                // 波形
+                // 波形（通常部分: 緑）
                 ctx.beginPath();
                 ctx.strokeStyle = '#4CAF50';
                 ctx.lineWidth = 1;
                 for (let x = 0; x < w; x++) {
+                    if (hasSel && x >= selXStart && x <= selXEnd) continue;
                     const s0 = Math.floor((x / w) * total);
                     const s1 = Math.floor(((x + 1) / w) * total);
                     let min = 0, max = 0;
@@ -945,6 +951,26 @@
                     ctx.lineTo(x + 0.5, midY - min * halfH);
                 }
                 ctx.stroke();
+
+                // 波形（選択部分: 黄色）
+                if (hasSel) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#FFD700';
+                    ctx.lineWidth = 1;
+                    for (let x = selXStart; x <= selXEnd && x < w; x++) {
+                        if (x < 0) continue;
+                        const s0 = Math.floor((x / w) * total);
+                        const s1 = Math.floor(((x + 1) / w) * total);
+                        let min = 0, max = 0;
+                        for (let j = s0; j < s1; j++) {
+                            if (data[j] < min) min = data[j];
+                            if (data[j] > max) max = data[j];
+                        }
+                        ctx.moveTo(x + 0.5, midY - max * halfH);
+                        ctx.lineTo(x + 0.5, midY - min * halfH);
+                    }
+                    ctx.stroke();
+                }
 
                 // 中央線
                 ctx.beginPath();
@@ -974,12 +1000,10 @@
                 ctx.stroke();
             }
 
-            // 選択範囲（全チャンネルにまたがる）
-            if (options.selectionStart != null && options.selectionEnd != null && options.selectionEnd > options.selectionStart) {
-                const xS = (options.selectionStart / duration) * w;
-                const xE = (options.selectionEnd / duration) * w;
-                ctx.fillStyle = 'rgba(196, 151, 47, 0.3)';
-                ctx.fillRect(xS, 0, xE - xS, h);
+            // 選択範囲の背景（全チャンネルにまたがる薄いハイライト）
+            if (hasSel) {
+                ctx.fillStyle = 'rgba(255, 215, 0, 0.08)';
+                ctx.fillRect(selXStart, 0, selXEnd - selXStart, h);
             }
 
             // 再生位置（白線）
