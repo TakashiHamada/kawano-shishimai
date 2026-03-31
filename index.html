@@ -914,37 +914,67 @@
             ctx.fillRect(0, 0, w, h);
             if (!audioBuffer) return;
 
-            const data = audioBuffer.getChannelData(0);
-            const total = data.length;
+            const numCh = audioBuffer.numberOfChannels;
+            const isStereo = numCh >= 2;
             const duration = audioBuffer.duration;
-            const midY = h / 2;
 
-            // 波形
-            ctx.beginPath();
-            ctx.strokeStyle = '#4CAF50';
-            ctx.lineWidth = 1;
-            for (let x = 0; x < w; x++) {
-                const s0 = Math.floor((x / w) * total);
-                const s1 = Math.floor(((x + 1) / w) * total);
-                let min = 0, max = 0;
-                for (let i = s0; i < s1; i++) {
-                    if (data[i] < min) min = data[i];
-                    if (data[i] > max) max = data[i];
+            // チャンネルごとに描画領域を分割
+            const channels = isStereo ? [0, 1] : [0];
+            const chHeight = h / channels.length;
+
+            channels.forEach((chIdx, i) => {
+                const data = audioBuffer.getChannelData(chIdx);
+                const total = data.length;
+                const yOffset = i * chHeight;
+                const midY = yOffset + chHeight / 2;
+                const halfH = chHeight / 2;
+
+                // 波形
+                ctx.beginPath();
+                ctx.strokeStyle = '#4CAF50';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < w; x++) {
+                    const s0 = Math.floor((x / w) * total);
+                    const s1 = Math.floor(((x + 1) / w) * total);
+                    let min = 0, max = 0;
+                    for (let j = s0; j < s1; j++) {
+                        if (data[j] < min) min = data[j];
+                        if (data[j] > max) max = data[j];
+                    }
+                    ctx.moveTo(x + 0.5, midY - max * halfH);
+                    ctx.lineTo(x + 0.5, midY - min * halfH);
                 }
-                ctx.moveTo(x + 0.5, midY - max * midY);
-                ctx.lineTo(x + 0.5, midY - min * midY);
+                ctx.stroke();
+
+                // 中央線
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.moveTo(0, midY);
+                ctx.lineTo(w, midY);
+                ctx.stroke();
+
+                // チャンネルラベル (L / R)
+                if (isStereo) {
+                    const label = chIdx === 0 ? 'L' : 'R';
+                    ctx.font = 'bold 12px sans-serif';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(label, 4, yOffset + 4);
+                }
+            });
+
+            // ステレオ時の分割線
+            if (isStereo) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.moveTo(0, chHeight);
+                ctx.lineTo(w, chHeight);
+                ctx.stroke();
             }
-            ctx.stroke();
 
-            // 中央線
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
-            ctx.lineWidth = 1;
-            ctx.moveTo(0, midY);
-            ctx.lineTo(w, midY);
-            ctx.stroke();
-
-            // 選択範囲
+            // 選択範囲（全チャンネルにまたがる）
             if (options.selectionStart != null && options.selectionEnd != null && options.selectionEnd > options.selectionStart) {
                 const xS = (options.selectionStart / duration) * w;
                 const xE = (options.selectionEnd / duration) * w;
@@ -1305,8 +1335,13 @@
                 try {
                     const buf = await decodeAudioFile('audio/' + encodeURIComponent(filename));
                     t.audioBuffer = buf;
+                    // ステレオ時はCanvas高さを2倍にしてL/R分割表示
+                    const isStereo = buf.numberOfChannels >= 2;
+                    canvas.height = isStereo ? 200 : 100;
+                    canvas.style.height = isStereo ? '200px' : '100px';
                     drawWaveform(canvas, buf);
-                    editorSetStatus(getDisplayTitle(filename) + ' を読み込みました（' + buf.duration.toFixed(1) + '秒）');
+                    const chInfo = isStereo ? 'ステレオ' : 'モノラル';
+                    editorSetStatus(getDisplayTitle(filename) + ' を読み込みました（' + buf.duration.toFixed(1) + '秒・' + chInfo + '）');
 
                     // インタラクション設定
                     t.teardown = setupWaveformInteraction(canvas, buf.duration, {
