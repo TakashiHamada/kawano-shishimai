@@ -298,6 +298,272 @@
             border-color: #C4972F;
         }
 
+        /* ============================================================
+           編集モード
+           ============================================================ */
+        body.editor-mode {
+            align-items: flex-start;
+            padding: 20px 0;
+        }
+        body.editor-mode .player-container { display: none; }
+
+        .editor-container {
+            display: none;
+            background: #F5F0E8;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            max-width: 800px;
+            width: 92%;
+            margin: 0 auto;
+            border: 1px solid #C4972F;
+            box-sizing: border-box;
+        }
+        body.editor-mode .editor-container { display: block; }
+
+        .editor-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #D4C9B0;
+        }
+        .editor-back-button {
+            background: transparent;
+            color: #7A6040;
+            border: 1px solid #C4972F;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-family: inherit;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .editor-back-button:hover { background: #EDE6DA; }
+        .editor-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2A2A2A;
+            letter-spacing: 0.1em;
+        }
+
+        .editor-track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .editor-track {
+            background: #FFFDF8;
+            border: 1px solid #C4972F;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .editor-track-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #EDE6DA;
+            border-bottom: 1px solid #D4C9B0;
+        }
+        .editor-track-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #7A6040;
+        }
+        .editor-track-close {
+            background: transparent;
+            color: #A09080;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+        .editor-track-close:hover {
+            background: rgba(197, 61, 67, 0.15);
+            color: #C53D43;
+        }
+        .editor-track-body {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .editor-file-select {
+            width: 100%;
+            padding: 9px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1px solid #C4972F;
+            border-radius: 4px;
+            background: #FFFDF8;
+            color: #2A2A2A;
+            cursor: pointer;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .editor-file-select:focus {
+            border-color: #A07828;
+            box-shadow: 0 0 0 2px rgba(196, 151, 47, 0.2);
+        }
+
+        .editor-waveform-wrap {
+            position: relative;
+            width: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #2A2A2A;
+            line-height: 0;
+        }
+        .editor-waveform {
+            display: block;
+            width: 100%;
+            height: 100px;
+            cursor: crosshair;
+        }
+
+        .editor-loading {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(42, 42, 42, 0.85);
+            color: #C4972F;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .editor-loading.hidden { display: none; }
+
+        .editor-playback-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .editor-play-button {
+            background: #C53D43;
+            color: #F5F0E8;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-family: inherit;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(197, 61, 67, 0.3);
+            white-space: nowrap;
+        }
+        .editor-play-button:hover { background: #A8333A; }
+        .editor-play-button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .editor-selection-label {
+            font-size: 13px;
+            color: #7A6040;
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .editor-action-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .editor-action-button {
+            background: #3A6B4C;
+            color: #F5F0E8;
+            border: none;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-family: inherit;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(58, 107, 76, 0.3);
+            white-space: nowrap;
+        }
+        .editor-action-button:hover { background: #2E5640; }
+        .editor-action-button:disabled { opacity: 0.45; cursor: not-allowed; }
+        .editor-action-button.download {
+            background: #C4972F;
+            box-shadow: 0 2px 4px rgba(196, 151, 47, 0.3);
+        }
+        .editor-action-button.download:hover { background: #A07828; }
+
+        .editor-add-track-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: #3A6B4C;
+            border: 2px dashed #3A6B4C;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        .editor-add-track-button:hover {
+            background: rgba(58, 107, 76, 0.08);
+        }
+
+        .editor-statusbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #EDE6DA;
+            border-radius: 4px;
+            border-left: 3px solid #C4972F;
+            font-size: 12px;
+            color: #7A6A5A;
+            min-height: 36px;
+        }
+        .editor-clipboard-status {
+            font-size: 12px;
+            color: #C4972F;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .editor-clipboard-status:empty { display: none; }
+
+        .editor-mode-open-button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px 0;
+            background: transparent;
+            color: #7A6040;
+            border: 1px solid #C4972F;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .editor-mode-open-button:hover { background: #EDE6DA; }
+
+        @media (max-width: 600px) {
+            .editor-container { padding: 14px 12px; }
+            .editor-track-body { padding: 10px; }
+            .editor-action-button { padding: 7px 12px; font-size: 12px; }
+            .editor-waveform { height: 80px; }
+        }
+
         @media screen and (orientation: landscape) and (max-height: 500px) {
             .orientation-warning {
                 display: flex;
@@ -363,6 +629,25 @@
         </div>
 
         <div class="status" id="status"></div>
+
+        <button class="editor-mode-open-button" id="openEditorBtn">編集モードへ</button>
+    </div>
+
+    <!-- 編集モード -->
+    <div class="editor-container" id="editorContainer">
+        <div class="editor-header">
+            <button class="editor-back-button" id="editorBackBtn">◀ プレイヤーに戻る</button>
+            <div class="editor-title">音声編集</div>
+        </div>
+
+        <div class="editor-track-list" id="editorTrackList"></div>
+
+        <button class="editor-add-track-button" id="editorAddTrackBtn">＋ トラック追加</button>
+
+        <div class="editor-statusbar">
+            <span id="editorStatusMsg">ファイルを選択して波形を表示してください</span>
+            <span class="editor-clipboard-status" id="editorClipboardStatus"></span>
+        </div>
     </div>
 
     <script>
@@ -597,6 +882,570 @@
                 status.textContent = '一時停止中';
             }
             updatePlayPauseButton();
+        });
+
+        // =================================================================
+        // 音声エンジン（AudioContext / デコード / 波形描画 / 再生）
+        // =================================================================
+        let _audioContext = null;
+
+        function getAudioContext() {
+            if (!_audioContext) {
+                _audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (_audioContext.state === 'suspended') _audioContext.resume();
+            return _audioContext;
+        }
+
+        async function decodeAudioFile(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('fetch failed: ' + response.status);
+            const arrayBuffer = await response.arrayBuffer();
+            return await getAudioContext().decodeAudioData(arrayBuffer);
+        }
+
+        function drawWaveform(canvas, audioBuffer, options) {
+            options = options || {};
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.fillStyle = '#2A2A2A';
+            ctx.fillRect(0, 0, w, h);
+            if (!audioBuffer) return;
+
+            const data = audioBuffer.getChannelData(0);
+            const total = data.length;
+            const duration = audioBuffer.duration;
+            const midY = h / 2;
+
+            // 波形
+            ctx.beginPath();
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x++) {
+                const s0 = Math.floor((x / w) * total);
+                const s1 = Math.floor(((x + 1) / w) * total);
+                let min = 0, max = 0;
+                for (let i = s0; i < s1; i++) {
+                    if (data[i] < min) min = data[i];
+                    if (data[i] > max) max = data[i];
+                }
+                ctx.moveTo(x + 0.5, midY - max * midY);
+                ctx.lineTo(x + 0.5, midY - min * midY);
+            }
+            ctx.stroke();
+
+            // 中央線
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.moveTo(0, midY);
+            ctx.lineTo(w, midY);
+            ctx.stroke();
+
+            // 選択範囲
+            if (options.selectionStart != null && options.selectionEnd != null && options.selectionEnd > options.selectionStart) {
+                const xS = (options.selectionStart / duration) * w;
+                const xE = (options.selectionEnd / duration) * w;
+                ctx.fillStyle = 'rgba(196, 151, 47, 0.3)';
+                ctx.fillRect(xS, 0, xE - xS, h);
+            }
+
+            // 再生位置（白線）
+            if (options.playbackTime != null) {
+                const px = (options.playbackTime / duration) * w;
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+                ctx.lineWidth = 2;
+                ctx.moveTo(px, 0);
+                ctx.lineTo(px, h);
+                ctx.stroke();
+            }
+
+            // 挿入位置（赤線）
+            if (options.insertTime != null) {
+                const px = (options.insertTime / duration) * w;
+                ctx.beginPath();
+                ctx.strokeStyle = '#C53D43';
+                ctx.lineWidth = 2;
+                ctx.moveTo(px, 0);
+                ctx.lineTo(px, h);
+                ctx.stroke();
+            }
+        }
+
+        function setupWaveformInteraction(canvas, duration, callbacks) {
+            let isDragging = false, dragStartX = null;
+            const DRAG_THRESHOLD = 4;
+
+            const toTime = (clientX) => {
+                const rect = canvas.getBoundingClientRect();
+                return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * duration;
+            };
+
+            const onDown = (clientX) => { isDragging = false; dragStartX = clientX; };
+            const onMove = (clientX) => {
+                if (dragStartX === null) return;
+                if (!isDragging && Math.abs(clientX - dragStartX) >= DRAG_THRESHOLD) isDragging = true;
+                if (isDragging) {
+                    const s = toTime(dragStartX), e = toTime(clientX);
+                    callbacks.onSelectionChange?.(Math.min(s, e), Math.max(s, e));
+                }
+            };
+            const onUp = (clientX) => {
+                if (dragStartX === null) return;
+                if (isDragging) {
+                    const s = toTime(dragStartX), e = toTime(clientX);
+                    callbacks.onSelectionChange?.(Math.min(s, e), Math.max(s, e));
+                } else {
+                    callbacks.onPositionClick?.(toTime(clientX));
+                }
+                dragStartX = null;
+                isDragging = false;
+            };
+
+            const md = (e) => { e.preventDefault(); onDown(e.clientX); };
+            const mm = (e) => { onMove(e.clientX); };
+            const mu = (e) => { onUp(e.clientX); };
+            const ts = (e) => { e.preventDefault(); onDown(e.touches[0].clientX); };
+            const tm = (e) => { e.preventDefault(); onMove(e.touches[0].clientX); };
+            const te = (e) => { e.preventDefault(); onUp(e.changedTouches[0].clientX); };
+
+            canvas.addEventListener('mousedown', md, { passive: false });
+            canvas.addEventListener('mousemove', mm);
+            canvas.addEventListener('mouseup', mu);
+            canvas.addEventListener('touchstart', ts, { passive: false });
+            canvas.addEventListener('touchmove', tm, { passive: false });
+            canvas.addEventListener('touchend', te, { passive: false });
+
+            return () => {
+                canvas.removeEventListener('mousedown', md);
+                canvas.removeEventListener('mousemove', mm);
+                canvas.removeEventListener('mouseup', mu);
+                canvas.removeEventListener('touchstart', ts);
+                canvas.removeEventListener('touchmove', tm);
+                canvas.removeEventListener('touchend', te);
+            };
+        }
+
+        function playTrackAudio(audioBuffer, startTime, endTime) {
+            const ctx = getAudioContext();
+            const source = ctx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(ctx.destination);
+            const offset = startTime || 0;
+            const dur = endTime != null ? (endTime - offset) : undefined;
+            const t0 = ctx.currentTime;
+            if (dur !== undefined) source.start(0, offset, dur);
+            else source.start(0, offset);
+            return { sourceNode: source, audioStartTime: t0, offsetTime: offset };
+        }
+
+        function stopTrackAudio(sourceNode) {
+            if (!sourceNode) return;
+            try { sourceNode.stop(); } catch(_) {}
+        }
+
+        // =================================================================
+        // バッファ操作（コピー / ペースト / WAVエクスポート）
+        // =================================================================
+        function copyAudioRange(audioCtx, audioBuffer, startTime, endTime) {
+            const sr = audioBuffer.sampleRate;
+            const ch = audioBuffer.numberOfChannels;
+            const s0 = Math.floor(startTime * sr);
+            const s1 = Math.min(Math.floor(endTime * sr), audioBuffer.length);
+            const len = Math.max(0, s1 - s0);
+            const result = audioCtx.createBuffer(ch, len, sr);
+            for (let c = 0; c < ch; c++) {
+                result.getChannelData(c).set(audioBuffer.getChannelData(c).subarray(s0, s1));
+            }
+            return result;
+        }
+
+        function insertAudioAt(audioCtx, targetBuffer, insertTime, clipBuffer) {
+            const targetRate = targetBuffer.sampleRate;
+            const outCh = Math.max(targetBuffer.numberOfChannels, clipBuffer.numberOfChannels);
+            const ratio = targetRate / clipBuffer.sampleRate;
+            const resampledLen = Math.round(clipBuffer.length * ratio);
+
+            const resample = (src, outLen) => {
+                const dst = new Float32Array(outLen);
+                for (let i = 0; i < outLen; i++) {
+                    const pos = i / ratio;
+                    const idx = Math.floor(pos);
+                    const frac = pos - idx;
+                    const a = idx < src.length ? src[idx] : 0;
+                    const b = idx + 1 < src.length ? src[idx + 1] : 0;
+                    dst[i] = a + frac * (b - a);
+                }
+                return dst;
+            };
+
+            const insertSample = Math.min(Math.floor(insertTime * targetRate), targetBuffer.length);
+            const outLength = targetBuffer.length + resampledLen;
+            const result = audioCtx.createBuffer(outCh, outLength, targetRate);
+
+            for (let c = 0; c < outCh; c++) {
+                const dst = result.getChannelData(c);
+                const tSrc = c < targetBuffer.numberOfChannels
+                    ? targetBuffer.getChannelData(c)
+                    : new Float32Array(targetBuffer.length);
+                const cIdx = c < clipBuffer.numberOfChannels ? c : (clipBuffer.numberOfChannels === 1 ? 0 : -1);
+                const cRaw = cIdx >= 0 ? clipBuffer.getChannelData(cIdx) : new Float32Array(clipBuffer.length);
+                const cSrc = resample(cRaw, resampledLen);
+
+                dst.set(tSrc.subarray(0, insertSample), 0);
+                dst.set(cSrc, insertSample);
+                dst.set(tSrc.subarray(insertSample), insertSample + resampledLen);
+            }
+            return result;
+        }
+
+        function audioBufferToWav(audioBuffer) {
+            const numCh = audioBuffer.numberOfChannels;
+            const sr = audioBuffer.sampleRate;
+            const frames = audioBuffer.length;
+            const chData = [];
+            for (let c = 0; c < numCh; c++) chData.push(audioBuffer.getChannelData(c));
+
+            const pcmBytes = frames * numCh * 2;
+            const buf = new ArrayBuffer(44 + pcmBytes);
+            const v = new DataView(buf);
+
+            const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i)); };
+            writeStr(0, 'RIFF');
+            v.setUint32(4, 36 + pcmBytes, true);
+            writeStr(8, 'WAVE');
+            writeStr(12, 'fmt ');
+            v.setUint32(16, 16, true);
+            v.setUint16(20, 1, true);
+            v.setUint16(22, numCh, true);
+            v.setUint32(24, sr, true);
+            v.setUint32(28, sr * numCh * 2, true);
+            v.setUint16(32, numCh * 2, true);
+            v.setUint16(34, 16, true);
+            writeStr(36, 'data');
+            v.setUint32(40, pcmBytes, true);
+
+            let off = 44;
+            for (let i = 0; i < frames; i++) {
+                for (let c = 0; c < numCh; c++) {
+                    const s = Math.max(-1, Math.min(1, chData[c][i]));
+                    v.setInt16(off, s < 0 ? Math.round(s * 32768) : Math.round(s * 32767), true);
+                    off += 2;
+                }
+            }
+            return new Blob([buf], { type: 'audio/wav' });
+        }
+
+        function downloadWav(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => { URL.revokeObjectURL(url); document.body.removeChild(a); }, 100);
+        }
+
+        // =================================================================
+        // 編集モード コントローラー
+        // =================================================================
+        const editorState = {
+            tracks: {},       // trackId -> { audioBuffer, selStart, selEnd, insertTime, sourceNode, animStop, teardown }
+            clipboard: null,  // AudioBuffer
+            clipDuration: 0,
+            nextTrackId: 0,
+        };
+
+        const editorStatusMsg = document.getElementById('editorStatusMsg');
+        const editorClipboardStatus = document.getElementById('editorClipboardStatus');
+
+        function editorSetStatus(msg) { editorStatusMsg.textContent = msg; }
+        function editorUpdateClipboard() {
+            editorClipboardStatus.textContent = editorState.clipboard
+                ? 'コピー済み: ' + editorState.clipDuration.toFixed(1) + '秒分'
+                : '';
+        }
+
+        function editorFormatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m.toString().padStart(2, '0') + ':' + s.toString().padStart(2, '0');
+        }
+
+        function createTrackHTML(id) {
+            const div = document.createElement('div');
+            div.className = 'editor-track';
+            div.id = 'editor-track-' + id;
+            div.dataset.trackId = id;
+
+            let optionsHTML = '<option value="">ファイルを選択...</option>';
+            audioFiles.forEach(f => {
+                const title = getDisplayTitle(f);
+                optionsHTML += '<option value="' + f.replace(/"/g, '&quot;') + '">' + title + '</option>';
+            });
+
+            div.innerHTML =
+                '<div class="editor-track-header">' +
+                    '<span class="editor-track-number">トラック ' + id + '</span>' +
+                    '<button class="editor-track-close" data-track-id="' + id + '">×</button>' +
+                '</div>' +
+                '<div class="editor-track-body">' +
+                    '<select class="editor-file-select" data-track-id="' + id + '">' + optionsHTML + '</select>' +
+                    '<div class="editor-waveform-wrap">' +
+                        '<canvas class="editor-waveform" data-track-id="' + id + '" width="760" height="100"></canvas>' +
+                        '<div class="editor-loading hidden" data-track-id="' + id + '">読み込み中...</div>' +
+                    '</div>' +
+                    '<div class="editor-playback-row">' +
+                        '<button class="editor-play-button" data-track-id="' + id + '" disabled>▶ 再生</button>' +
+                        '<span class="editor-selection-label" data-track-id="' + id + '">選択: なし</span>' +
+                    '</div>' +
+                    '<div class="editor-action-row">' +
+                        '<button class="editor-action-button" data-action="copy" data-track-id="' + id + '" disabled>コピー</button>' +
+                        '<button class="editor-action-button" data-action="paste" data-track-id="' + id + '" disabled>ペースト（挿入）</button>' +
+                        '<button class="editor-action-button download" data-action="download" data-track-id="' + id + '" disabled>↓ ダウンロード</button>' +
+                    '</div>' +
+                '</div>';
+            return div;
+        }
+
+        function getTrackEl(id, selector) {
+            return document.querySelector('#editor-track-' + id + ' ' + selector);
+        }
+        function getTrackElByData(id, selector) {
+            return document.querySelector(selector + '[data-track-id="' + id + '"]');
+        }
+
+        function redrawTrack(id) {
+            const t = editorState.tracks[id];
+            if (!t) return;
+            const canvas = getTrackElByData(id, 'canvas.editor-waveform');
+            if (!canvas) return;
+            drawWaveform(canvas, t.audioBuffer, {
+                selectionStart: t.selStart,
+                selectionEnd: t.selEnd,
+                insertTime: t.insertTime,
+            });
+        }
+
+        function updateTrackSelectionLabel(id) {
+            const t = editorState.tracks[id];
+            const label = getTrackElByData(id, '.editor-selection-label');
+            if (!t || !label) return;
+            if (t.selStart != null && t.selEnd != null) {
+                label.textContent = '選択: ' + editorFormatTime(t.selStart) + ' → ' + editorFormatTime(t.selEnd);
+            } else if (t.insertTime != null) {
+                label.textContent = '挿入位置: ' + editorFormatTime(t.insertTime);
+            } else {
+                label.textContent = '選択: なし';
+            }
+        }
+
+        function enableTrackButtons(id) {
+            const t = editorState.tracks[id];
+            if (!t) return;
+            const hasBuf = !!t.audioBuffer;
+            const hasSel = t.selStart != null && t.selEnd != null;
+            const hasInsert = t.insertTime != null;
+            const hasClip = !!editorState.clipboard;
+
+            getTrackElByData(id, '.editor-play-button').disabled = !hasBuf;
+            getTrackElByData(id, '[data-action="copy"]').disabled = !(hasBuf && hasSel);
+            getTrackElByData(id, '[data-action="paste"]').disabled = !(hasBuf && hasInsert && hasClip);
+            getTrackElByData(id, '[data-action="download"]').disabled = !hasBuf;
+        }
+
+        // 全トラックのペーストボタンを更新
+        function refreshAllPasteButtons() {
+            for (const id of Object.keys(editorState.tracks)) {
+                enableTrackButtons(id);
+            }
+        }
+
+        function addTrack() {
+            editorState.nextTrackId++;
+            const id = editorState.nextTrackId;
+            editorState.tracks[id] = {
+                audioBuffer: null,
+                selStart: null, selEnd: null,
+                insertTime: null,
+                sourceNode: null, animStop: null, teardown: null,
+                filename: '',
+            };
+
+            const el = createTrackHTML(id);
+            document.getElementById('editorTrackList').appendChild(el);
+
+            // ファイル選択イベント
+            const select = getTrackElByData(id, '.editor-file-select');
+            select.addEventListener('change', async () => {
+                const t = editorState.tracks[id];
+                if (!t) return;
+                const filename = select.value;
+                if (!filename) return;
+
+                // 前のリスナーをクリア
+                if (t.teardown) { t.teardown(); t.teardown = null; }
+                stopTrackAudio(t.sourceNode);
+                if (t.animStop) { t.animStop(); t.animStop = null; }
+
+                t.audioBuffer = null;
+                t.selStart = null; t.selEnd = null; t.insertTime = null;
+                t.filename = filename;
+
+                const canvas = getTrackElByData(id, 'canvas.editor-waveform');
+                const loading = getTrackElByData(id, '.editor-loading');
+                drawWaveform(canvas, null);
+                loading.classList.remove('hidden');
+                editorSetStatus(getDisplayTitle(filename) + ' を読み込み中...');
+
+                try {
+                    const buf = await decodeAudioFile('audio/' + encodeURIComponent(filename));
+                    t.audioBuffer = buf;
+                    drawWaveform(canvas, buf);
+                    editorSetStatus(getDisplayTitle(filename) + ' を読み込みました（' + buf.duration.toFixed(1) + '秒）');
+
+                    // インタラクション設定
+                    t.teardown = setupWaveformInteraction(canvas, buf.duration, {
+                        onSelectionChange: (s, e) => {
+                            t.selStart = s; t.selEnd = e; t.insertTime = null;
+                            redrawTrack(id);
+                            updateTrackSelectionLabel(id);
+                            enableTrackButtons(id);
+                        },
+                        onPositionClick: (time) => {
+                            t.selStart = null; t.selEnd = null; t.insertTime = time;
+                            redrawTrack(id);
+                            updateTrackSelectionLabel(id);
+                            enableTrackButtons(id);
+                        },
+                    });
+                } catch (err) {
+                    editorSetStatus('読み込みエラー: ' + err.message);
+                }
+                loading.classList.add('hidden');
+                enableTrackButtons(id);
+            });
+
+            // 閉じるボタン
+            getTrackElByData(id, '.editor-track-close').addEventListener('click', () => {
+                const t = editorState.tracks[id];
+                if (t) {
+                    if (t.teardown) t.teardown();
+                    stopTrackAudio(t.sourceNode);
+                    if (t.animStop) t.animStop();
+                }
+                delete editorState.tracks[id];
+                document.getElementById('editor-track-' + id)?.remove();
+            });
+
+            // 再生ボタン
+            getTrackElByData(id, '.editor-play-button').addEventListener('click', () => {
+                const t = editorState.tracks[id];
+                if (!t || !t.audioBuffer) return;
+
+                // 既に再生中なら停止
+                if (t.sourceNode) {
+                    stopTrackAudio(t.sourceNode);
+                    if (t.animStop) { t.animStop(); t.animStop = null; }
+                    t.sourceNode = null;
+                    getTrackElByData(id, '.editor-play-button').textContent = '▶ 再生';
+                    redrawTrack(id);
+                    return;
+                }
+
+                const startT = t.selStart;
+                const endT = t.selEnd;
+                const { sourceNode, audioStartTime, offsetTime } = playTrackAudio(t.audioBuffer, startT, endT);
+                t.sourceNode = sourceNode;
+                getTrackElByData(id, '.editor-play-button').textContent = '■ 停止';
+
+                const canvas = getTrackElByData(id, 'canvas.editor-waveform');
+                let rafId = null;
+                const tick = () => {
+                    const elapsed = getAudioContext().currentTime - audioStartTime;
+                    const pos = offsetTime + elapsed;
+                    drawWaveform(canvas, t.audioBuffer, {
+                        selectionStart: t.selStart,
+                        selectionEnd: t.selEnd,
+                        insertTime: t.insertTime,
+                        playbackTime: pos,
+                    });
+                    if (pos < (endT || t.audioBuffer.duration)) {
+                        rafId = requestAnimationFrame(tick);
+                    }
+                };
+                rafId = requestAnimationFrame(tick);
+
+                t.animStop = () => { if (rafId) cancelAnimationFrame(rafId); };
+                sourceNode.addEventListener('ended', () => {
+                    t.sourceNode = null;
+                    if (t.animStop) { t.animStop(); t.animStop = null; }
+                    getTrackElByData(id, '.editor-play-button').textContent = '▶ 再生';
+                    redrawTrack(id);
+                });
+            });
+
+            // コピーボタン
+            getTrackElByData(id, '[data-action="copy"]').addEventListener('click', () => {
+                const t = editorState.tracks[id];
+                if (!t || !t.audioBuffer || t.selStart == null || t.selEnd == null) return;
+                editorState.clipboard = copyAudioRange(getAudioContext(), t.audioBuffer, t.selStart, t.selEnd);
+                editorState.clipDuration = t.selEnd - t.selStart;
+                editorUpdateClipboard();
+                editorSetStatus(editorFormatTime(t.selStart) + ' → ' + editorFormatTime(t.selEnd) + ' をコピーしました');
+                refreshAllPasteButtons();
+            });
+
+            // ペーストボタン
+            getTrackElByData(id, '[data-action="paste"]').addEventListener('click', () => {
+                const t = editorState.tracks[id];
+                if (!t || !t.audioBuffer || t.insertTime == null || !editorState.clipboard) return;
+                const newBuf = insertAudioAt(getAudioContext(), t.audioBuffer, t.insertTime, editorState.clipboard);
+                t.audioBuffer = newBuf;
+                t.selStart = null; t.selEnd = null; t.insertTime = null;
+                redrawTrack(id);
+                updateTrackSelectionLabel(id);
+                enableTrackButtons(id);
+                editorSetStatus('挿入しました（合計 ' + newBuf.duration.toFixed(1) + '秒）');
+            });
+
+            // ダウンロードボタン
+            getTrackElByData(id, '[data-action="download"]').addEventListener('click', () => {
+                const t = editorState.tracks[id];
+                if (!t || !t.audioBuffer) return;
+                editorSetStatus('WAVファイルを生成中...');
+                setTimeout(() => {
+                    const blob = audioBufferToWav(t.audioBuffer);
+                    const name = '編集済み_' + (t.filename || 'audio').replace(/\.[^.]+$/, '') + '.wav';
+                    downloadWav(blob, name);
+                    editorSetStatus('ダウンロードを開始しました');
+                }, 50);
+            });
+
+            enableTrackButtons(id);
+            return id;
+        }
+
+        // --- 編集モード 開/閉 ---
+        document.getElementById('openEditorBtn').addEventListener('click', () => {
+            document.body.classList.add('editor-mode');
+            // 初回はトラック2つ追加
+            if (Object.keys(editorState.tracks).length === 0) {
+                addTrack();
+                addTrack();
+            }
+        });
+
+        document.getElementById('editorBackBtn').addEventListener('click', () => {
+            document.body.classList.remove('editor-mode');
+        });
+
+        document.getElementById('editorAddTrackBtn').addEventListener('click', () => {
+            addTrack();
         });
     </script>
 </body>
