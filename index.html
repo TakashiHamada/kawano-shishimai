@@ -365,28 +365,47 @@
         .editor-track-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
             padding: 8px 12px;
             background: #EDE6DA;
             border-bottom: 1px solid #D4C9B0;
+            flex-wrap: wrap;
         }
         .editor-track-number {
             font-size: 14px;
             font-weight: bold;
             color: #7A6040;
+            margin-right: 4px;
         }
-        .editor-track-close {
+        .editor-track-header .editor-file-select {
+            flex: 1;
+            min-width: 120px;
+            padding: 5px 8px;
+            font-size: 13px;
+        }
+        .editor-header-button {
             background: transparent;
-            color: #A09080;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0 4px;
+            color: #7A6040;
+            border: 1px solid #C4972F;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-family: inherit;
             border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
-        .editor-track-close:hover {
+        .editor-header-button:hover { background: rgba(196, 151, 47, 0.15); }
+        .editor-header-button:disabled { opacity: 0.45; cursor: not-allowed; }
+        .editor-header-button.close-btn {
+            border-color: #A09080;
+            color: #A09080;
+            padding: 4px 8px;
+        }
+        .editor-header-button.close-btn:hover {
             background: rgba(197, 61, 67, 0.15);
             color: #C53D43;
+            border-color: #C53D43;
         }
         .editor-track-body {
             padding: 12px;
@@ -490,11 +509,6 @@
         }
         .editor-action-button:hover { background: #2E5640; }
         .editor-action-button:disabled { opacity: 0.45; cursor: not-allowed; }
-        .editor-action-button.download {
-            background: #C4972F;
-            box-shadow: 0 2px 4px rgba(196, 151, 47, 0.3);
-        }
-        .editor-action-button.download:hover { background: #A07828; }
 
         .editor-add-track-button {
             display: flex;
@@ -642,7 +656,7 @@
 
         <div class="editor-track-list" id="editorTrackList"></div>
 
-        <button class="editor-add-track-button" id="editorAddTrackBtn">＋ トラック追加</button>
+        <button class="editor-add-track-button" id="editorAddTrackBtn">+ トラック追加</button>
 
         <div class="editor-statusbar">
             <span id="editorStatusMsg">ファイルを選択して波形を表示してください</span>
@@ -1244,11 +1258,12 @@
 
             div.innerHTML =
                 '<div class="editor-track-header">' +
-                    '<span class="editor-track-number">トラック ' + id + '</span>' +
-                    '<button class="editor-track-close" data-track-id="' + id + '">×</button>' +
+                    '<span class="editor-track-number">T' + id + '</span>' +
+                    '<select class="editor-file-select" data-track-id="' + id + '">' + optionsHTML + '</select>' +
+                    '<button class="editor-header-button" data-action="download" data-track-id="' + id + '" disabled>保存</button>' +
+                    '<button class="editor-header-button close-btn" data-track-id="' + id + '">×</button>' +
                 '</div>' +
                 '<div class="editor-track-body">' +
-                    '<select class="editor-file-select" data-track-id="' + id + '">' + optionsHTML + '</select>' +
                     '<div class="editor-waveform-wrap">' +
                         '<canvas class="editor-waveform" data-track-id="' + id + '" width="760" height="100"></canvas>' +
                         '<div class="editor-loading hidden" data-track-id="' + id + '">読み込み中...</div>' +
@@ -1260,7 +1275,6 @@
                     '<div class="editor-action-row">' +
                         '<button class="editor-action-button" data-action="copy" data-track-id="' + id + '" disabled>コピー</button>' +
                         '<button class="editor-action-button" data-action="paste" data-track-id="' + id + '" disabled>ペースト（挿入）</button>' +
-                        '<button class="editor-action-button download" data-action="download" data-track-id="' + id + '" disabled>↓ ダウンロード</button>' +
                     '</div>' +
                 '</div>';
             return div;
@@ -1390,7 +1404,7 @@
             });
 
             // 閉じるボタン
-            getTrackElByData(id, '.editor-track-close').addEventListener('click', () => {
+            getTrackElByData(id, '.editor-header-button.close-btn').addEventListener('click', () => {
                 const t = editorState.tracks[id];
                 if (t) {
                     if (t.teardown) t.teardown();
